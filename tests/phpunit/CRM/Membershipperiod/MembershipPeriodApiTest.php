@@ -51,5 +51,7 @@ class CRM_Membershipperiod_MembershipPeriodApiTest extends \PHPUnit_Framework_Te
   public function testWellFormedUF() {
     $this->assertEquals('UnitTests', CIVICRM_UF);
   }
+  
+  
 
 }
