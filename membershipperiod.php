@@ -153,32 +153,19 @@ function membershipperiod_civicrm_alterSettingsFolders(&$metaDataFolders = NULL)
 /**
  * Implements hook_civicrm_tabset().
  *
- *adds a contact tab "Membership Periods" and fetches the content from database.
+ * adds a tab "Membership Periods" and fetches the content from database.
  */
 function membershipperiod_civicrm_tabset($tabsetName, &$tabs, $context) {
 	if ($tabsetName == 'civicrm/contact/view') {
-		try {
-			$result = civicrm_api3('MembershipPeriod', 'get', ["contact_id" => $context['contact_id']]);
-			if (!civicrm_error($result)
-				&& isset($result['count']) && $result['count'] >= 0
-			) {
-				$mp_count = $result['count'];
-			}
-			else {
-				$mp_count = 0;
-			}
-		}catch (CiviCRM_API3_Exception $e){
-			$mp_count = 0;
-		}
-		
+		$mp_count = civicrm_api3('MembershipPeriod', 'getcount', ["contact_id" => $context['contact_id']]);
 		$url = CRM_Utils_System::url('civicrm/membership-period?reset=1&contact_id='
 						. $context['contact_id']);
 		
 		$tabs[] = [
-			'id' => 'membershipPeriodTab',
+			'id' => 'membershipperiod',
 			'url' => $url,
 			'title' => 'Membership Periods',
-			'weight' => 300,
+			'weight' => 500,
 			'count' => $mp_count,
 		];
 		
@@ -202,9 +189,10 @@ function membershipperiod_civicrm_post($op, $objectName, $objectId, &$objectRef)
 			$instance = new CRM_Membershipperiod_DAO_MembershipPeriod();
 			
 			// try to find out the start date for the new membership period entry
-			$instance->query("SELECT MAX(DATE_ADD(end_date, INTERVAL 1 DAY)) AS new_date
-								 FROM civicrm_membershipperiod
-								 WHERE membership_id = $objectRef->id");
+			$instance->selectAdd();
+			$instance->selectAdd("MAX(DATE_ADD(end_date, INTERVAL 1 DAY)) as new_date");
+			$instance->whereAdd("membership_id = ".$objectRef->id);
+			$instance->find();
 			
 			if ($instance->fetch()) {
 				$params = [];

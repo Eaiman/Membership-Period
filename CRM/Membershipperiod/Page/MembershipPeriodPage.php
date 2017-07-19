@@ -5,6 +5,13 @@ class CRM_Membershipperiod_Page_MembershipPeriodPage extends CRM_Core_Page {
 	public function run() {
 		// Example: Set the page-title dynamically; alternatively, declare a static title in xml/Menu/*.xml
 		CRM_Utils_System::setTitle(ts('Membership Periods'));
+		
+		// These lines are for testing purpose
+//		CRM_Core_Resources::singleton()
+//			->addScriptFile('Membership Period', 'templates/CRM/membershipperiod/Page/MembershipPeriod.js', 2, 'html-header')
+//			->addScriptFile('civicrm', 'templates/CRM/common/TabHeader.js', 1, 'html-header');
+			
+		
 		$contact_id = -1;
 		if (isset($_GET['contact_id'])) {
 			/**
