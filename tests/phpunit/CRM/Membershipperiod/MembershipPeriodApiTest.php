@@ -39,7 +39,8 @@ class CRM_Membershipperiod_MembershipPeriodApiTest extends CiviUnitTestCase impl
 			'callback' => array('html_quickform_rule_callback', 'HTML/QuickForm/Rule/Callback.php'),
 			'compare' => array('html_quickform_rule_compare', 'HTML/QuickForm/Rule/Compare.php'),
 		);
-		$GLOBALS['_CV']['TEST_DB_DSN'] = 'mysql://homestead:secret@localhost:3306/civicrm_tests_dev?new_link=true';
+		// change this to test DB
+//		$GLOBALS['_CV']['TEST_DB_DSN'] = 'mysql://homestead:secret@localhost:3306/civicrm_tests_dev?new_link=true';
 		
 		$this->_contactID = $this->organizationCreate();
 		$this->_membershipTypeID = $this->membershipTypeCreate(array('member_of_contact_id' => $this->_contactID));
