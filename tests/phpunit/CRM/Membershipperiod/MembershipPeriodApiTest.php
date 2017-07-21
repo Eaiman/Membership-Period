@@ -17,6 +17,7 @@ use Civi\Test\TransactionalInterface;
  *       b. Disable TransactionalInterface, and handle all setup/teardown yourself.
  *
  * @group headless
+ * @author Eaiman Shoshi
  */
 class CRM_Membershipperiod_MembershipPeriodApiTest extends CiviUnitTestCase implements HeadlessInterface {
 	
@@ -39,7 +40,6 @@ class CRM_Membershipperiod_MembershipPeriodApiTest extends CiviUnitTestCase impl
 			'compare' => array('html_quickform_rule_compare', 'HTML/QuickForm/Rule/Compare.php'),
 		);
 		$GLOBALS['_CV']['TEST_DB_DSN'] = 'mysql://homestead:secret@localhost:3306/civicrm_tests_dev?new_link=true';
-//		$GLOBALS['_CV']['TEST_DB_DSN'] = 'mysql://root:root@localhost:3306/civicrm_tests_dev?new_link=true';
 		
 		$this->_contactID = $this->organizationCreate();
 		$this->_membershipTypeID = $this->membershipTypeCreate(array('member_of_contact_id' => $this->_contactID));

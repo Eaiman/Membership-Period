@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * Class CRM_Membershipperiod_Page_MembershipPeriodPage
+ * @author Eaiman Shoshi
+ */
+
 class CRM_Membershipperiod_Page_MembershipPeriodPage extends CRM_Core_Page {
 	
 	public function run() {

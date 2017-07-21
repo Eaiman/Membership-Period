@@ -2,6 +2,7 @@
 
 /**
  * Collection of upgrade steps.
+ * @author Eaiman Shoshi
  */
 class CRM_Membershipperiod_Upgrader extends CRM_Membershipperiod_Upgrader_Base
 {

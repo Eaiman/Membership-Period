@@ -7,6 +7,8 @@
  * @param array $spec description of fields supported by this API call
  * @return void
  * @see http://wiki.civicrm.org/confluence/display/CRMDOC/API+Architecture+Standards
+ *
+ * @author Eaiman Shoshi
  */
 function _civicrm_api3_membership_period_Create_spec(&$spec) {
 //  $spec['magicword']['api.required'] = 1;

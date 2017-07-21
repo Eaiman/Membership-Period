@@ -4,6 +4,8 @@
 -- *
 -- * Developed for interview purpose
 -- *
+-- * @author Eaiman Shoshi
+-- *
 -- *******************************************************/
 CREATE TABLE IF NOT EXISTS `civicrm_membershipperiod` (
      `id` int unsigned NOT NULL AUTO_INCREMENT  COMMENT 'Unique Membership Period ID',

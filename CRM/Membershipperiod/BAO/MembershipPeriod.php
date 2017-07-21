@@ -1,13 +1,17 @@
 <?php
 
 class CRM_Membershipperiod_BAO_MembershipPeriod extends CRM_Membershipperiod_DAO_MembershipPeriod {
-
-  /**
-   * Create a new MembershipPeriod based on array-data
-   *
-   * @param array $params key-value pairs
-   * @return CRM_Membershipperiod_DAO_MembershipPeriod|NULL
-   */
+	
+	/**
+	 * Create a new MembershipPeriod based on array-data
+	 *
+	 * @param array $params key-value pairs
+	 *
+	 * @return \CRM_Membershipperiod_DAO_MembershipPeriod|NULL
+	 * @throws \Exception
+	 *
+	 * @author Eaiman Shoshi
+	 */
   public static function Create($params) {
   	try {
 			$className = 'CRM_Membershipperiod_DAO_MembershipPeriod';
@@ -26,23 +30,26 @@ class CRM_Membershipperiod_BAO_MembershipPeriod extends CRM_Membershipperiod_DAO
 		}
   }
   
-  public static function getvalues($params){
+  public static function getValues($params){
 		try {
 			$contact_id = $params['contact_id'];
-			$sql = "SELECT mp.start_date, mp.end_date, mp.renewed_date, mp.contribution_id, mp.membership_id, mp.id
+			$sql = "SELECT mp.*
 							FROM civicrm_membershipperiod as mp
 							INNER JOIN civicrm_membership as m ON m.id = mp.membership_id
 							WHERE m.contact_id = $contact_id";
-		
-			//	$args = ['useWhereAsOn' => false];
-			//	$membership = new CRM_Member_DAO_Membership();
-			//	$membership->contact_id =$contact_id;
-			//	$membership->whereAdd("id = civicrm_membershipperiod.membership_id");
-			//	$results = new CRM_Membershipperiod_DAO_MembershipPeriod();
-			//	$results->joinAdd($membership);
-			//	$results->find();
+			
+			// this part of code is for use the `joinAdd` function.
+			// just need to create a .inc fuction to link up membership and membershipperiod table.
+//			$membership = new CRM_Member_DAO_Membership();
+//			$results = new CRM_Membershipperiod_DAO_MembershipPeriod();
+//			$results->joinAdd($membership, 'INNER');
+//			$results->selectAdd('civicrm_membershipperiod.*');
+//			$results->whereAdd("civicrm_membershipperiod.membership_id = civicrm_membership.id
+//			                   AND civicrm_membership.contact_id = {$contact_id}");
+//			$results->find();
 		
 			$results = CRM_Core_DAO::executeQuery($sql);
+			
 			$records = [];
 			$i = 0;
 			while ($results->fetch()) {
