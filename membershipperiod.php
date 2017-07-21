@@ -215,10 +215,14 @@ function membershipperiod_civicrm_post($op, $objectName, $objectId, &$objectRef)
 		$instance = new CRM_Membershipperiod_DAO_MembershipPeriod();
 		if (!$instance->get("contribution_id", $objectRef->contribution_id)) {
 			$instance = new CRM_Membershipperiod_DAO_MembershipPeriod();
-			$instance->contribution_id = $objectRef->contribution_id;
 			$instance->whereAdd("membership_id = ".$objectRef->membership_id);
 			$instance->whereAdd("contribution_id IS NULL");
-			$instance->update(DB_DATAOBJECT_WHEREADD_ONLY);
+			$instance->orderBy();
+			$instance->orderBy("id DESC");
+			$instance->find(TRUE);
+//			$instance->fetch();
+			$instance->contribution_id = $objectRef->contribution_id;
+			$instance->update();
 		}
 		$instance->free();
 	}

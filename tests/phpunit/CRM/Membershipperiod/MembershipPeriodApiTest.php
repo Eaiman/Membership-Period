@@ -38,8 +38,8 @@ class CRM_Membershipperiod_MembershipPeriodApiTest extends CiviUnitTestCase impl
 			'callback' => array('html_quickform_rule_callback', 'HTML/QuickForm/Rule/Callback.php'),
 			'compare' => array('html_quickform_rule_compare', 'HTML/QuickForm/Rule/Compare.php'),
 		);
-//		$GLOBALS['_CV']['TEST_DB_DSN'] = 'mysql://homestead:secret@localhost:3306/civicrm_tests_dev?new_link=true';
-		$GLOBALS['_CV']['TEST_DB_DSN'] = 'mysql://root:root@localhost:3306/civicrm_tests_dev?new_link=true';
+		$GLOBALS['_CV']['TEST_DB_DSN'] = 'mysql://homestead:secret@localhost:3306/civicrm_tests_dev?new_link=true';
+//		$GLOBALS['_CV']['TEST_DB_DSN'] = 'mysql://root:root@localhost:3306/civicrm_tests_dev?new_link=true';
 		
 		$this->_contactID = $this->organizationCreate();
 		$this->_membershipTypeID = $this->membershipTypeCreate(array('member_of_contact_id' => $this->_contactID));
@@ -138,7 +138,7 @@ class CRM_Membershipperiod_MembershipPeriodApiTest extends CiviUnitTestCase impl
 	 * renew membership with change in membership type
 	 * and membership payment
 	 */
-	public function testRenewMembership() {
+	public function testWhenRenewMembership() {
 		$contactId = $this->individualCreate();
 		$joinDate = $startDate = date("Ymd", strtotime(date("Ymd") . " -6 month"));
 		$endDate = date("Ymd", strtotime($joinDate . " +1 year -1 day"));
@@ -210,21 +210,26 @@ class CRM_Membershipperiod_MembershipPeriodApiTest extends CiviUnitTestCase impl
 		
 		$result = $this->callAPISuccess("MembershipPeriod", "get", array("contact_id"=>$contactId));
 		
-		foreach ($result['values'] as $v){
+		$this->assertEquals(2, $result["count"],'Check two membership period is created or not');
+		$counter = 0;
+		foreach ($result['values'] as $k=>$v){
 			$this->assertEquals($MembershipRenew->id,
 						$v["membership_id"],
 						'Check membership_id');
+			
+			if(!$v["contribution_id"]){
+				// this one is for the first time membership when no payment was made
+				$counter--;
+			}else{
+				// this one is for renewed membership when a payment was made
+				$this->assertEquals($this->_contribution['id'],
+							$v["contribution_id"],
+							'Check contribution_id');
+				$counter++;
+			}
 		}
 		
-		$this->assertEquals(2, $result["count"],'Check two membership period is created or not');
-		foreach ($result['values'] as $v){
-			$this->assertEquals($MembershipRenew->id,
-						$v["membership_id"],
-						'Check membership_id');
-			$this->assertEquals($this->_contribution['id'],
-						$v["contribution_id"],
-						'Check contribution_id');
-		}
+		$this->assertEquals(0, $counter, 'contribution_id value is balanced');
 		
 		$this->membershipDelete($membershipId);
 		$this->contactDelete($contactId);

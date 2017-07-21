@@ -29,8 +29,9 @@ class CRM_Membershipperiod_BAO_MembershipPeriod extends CRM_Membershipperiod_DAO
   public static function getvalues($params){
 		try {
 			$contact_id = $params['contact_id'];
-			$sql = "SELECT * FROM civicrm_membershipperiod mp
-							INNER JOIN civicrm_membership m ON m.id = mp.membership_id
+			$sql = "SELECT mp.start_date, mp.end_date, mp.renewed_date, mp.contribution_id, mp.membership_id, mp.id
+							FROM civicrm_membershipperiod as mp
+							INNER JOIN civicrm_membership as m ON m.id = mp.membership_id
 							WHERE m.contact_id = $contact_id";
 		
 			//	$args = ['useWhereAsOn' => false];
